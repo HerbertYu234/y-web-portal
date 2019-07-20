@@ -3,7 +3,7 @@ from flask_mako import render_template, render_template_string
 import logging as logging
 import os
 from datetime import datetime
-from portal.library import jsonview
+from portal.library.helpers import jsonview
 import requests
 
 
