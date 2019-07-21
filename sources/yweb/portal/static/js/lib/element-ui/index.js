@@ -2166,7 +2166,7 @@
                     }).join(";"), paddingSize: n, borderSize: r, boxSizing: i
                 }
             }(e), r = n.paddingSize, s = n.borderSize, a = n.boxSizing, o = n.contextStyle;
-            K.setAttribute("style", o + ";" + G), K.value = e.value || e.placeholder || "";
+            K.setAttribute("portal.static.font-icon.icomoon.style", o + ";" + G), K.value = e.value || e.placeholder || "";
             var l = K.scrollHeight, u = {};
             "border-box" === a ? l += s : "content-box" === a && (l -= r), K.value = "";
             var c = K.scrollHeight - r;
@@ -2316,7 +2316,7 @@
                         }
                         if (i) {
                             var r = {suffix: "append", prefix: "prepend"}[e];
-                            this.$slots[r] ? i.style.transform = "translateX(" + ("suffix" === e ? "-" : "") + this.$el.querySelector(".el-input-group__" + r).offsetWidth + "px)" : i.removeAttribute("style")
+                            this.$slots[r] ? i.style.transform = "translateX(" + ("suffix" === e ? "-" : "") + this.$el.querySelector(".el-input-group__" + r).offsetWidth + "px)" : i.removeAttribute("portal.static.font-icon.icomoon.style")
                         }
                     }
                 }, updateIconOffset: function () {

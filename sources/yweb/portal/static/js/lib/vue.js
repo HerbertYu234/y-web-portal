@@ -2770,7 +2770,7 @@
         var loop = function ( key ) {
           if (
             key === 'class' ||
-            key === 'style' ||
+            key === 'portal.static.font-icon.icomoon.style' ||
             isReservedAttribute(key)
           ) {
             hash = data;
@@ -9159,7 +9159,7 @@
 
   function transformNode$1 (el, options) {
     var warn = options.warn || baseWarn;
-    var staticStyle = getAndRemoveAttr(el, 'style');
+    var staticStyle = getAndRemoveAttr(el, 'portal.static.font-icon.icomoon.style');
     if (staticStyle) {
       /* istanbul ignore if */
       {
@@ -9170,14 +9170,14 @@
             'Interpolation inside attributes has been removed. ' +
             'Use v-bind or the colon shorthand instead. For example, ' +
             'instead of <div style="{{ val }}">, use <div :style="val">.',
-            el.rawAttrsMap['style']
+            el.rawAttrsMap['portal.static.font-icon.icomoon.style']
           );
         }
       }
       el.staticStyle = JSON.stringify(parseStyleText(staticStyle));
     }
 
-    var styleBinding = getBindingAttr(el, 'style', false /* getStatic */);
+    var styleBinding = getBindingAttr(el, 'portal.static.font-icon.icomoon.style', false /* getStatic */);
     if (styleBinding) {
       el.styleBinding = styleBinding;
     }
@@ -10430,12 +10430,12 @@
 
   // for script (e.g. type="x/template") or style, do not decode content
   function isTextTag (el) {
-    return el.tag === 'script' || el.tag === 'style'
+    return el.tag === 'script' || el.tag === 'portal.static.font-icon.icomoon.style'
   }
 
   function isForbiddenTag (el) {
     return (
-      el.tag === 'style' ||
+      el.tag === 'portal.static.font-icon.icomoon.style' ||
       (el.tag === 'script' && (
         !el.attrsMap.type ||
         el.attrsMap.type === 'text/javascript'

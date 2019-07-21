@@ -9,10 +9,17 @@ let vm = new Vue({
             loader: {
                 run: false
             },
-            header:{
-                scroll:true,
-                account:false,
-                settings:false
+            header: {
+                scroll: true,
+                account: false,
+                settings: false,
+            },
+            account: {
+                layer_login: true,
+                layer_regist: false
+            },
+            kit: {
+                isFullScreen: false
             }
         }
     },
@@ -23,19 +30,30 @@ let vm = new Vue({
         },
     },
     methods: {
-        toggleAccountLayer(){
+        goRegist() {
+            this.account.layer_login = false;
+            this.account.layer_regist = true;
+        },
+        goLogin() {
+            this.account.layer_login = true;
+            this.account.layer_regist = false;
+        },
+        toggleAccountLayer() {
             this.header.account = !this.header.account;
         },
-        toggleSettingsLayer(){
+        toggleSettingsLayer() {
             this.header.settings = !this.header.settings;
+        },
+        toggleFullscreen() {
+            if (this.kit.isFullScreen) {
+                UTILES.exitFullscreen();
+                this.kit.isFullScreen = false;
+            } else {
+                UTILES.fullScreen();
+                this.kit.isFullScreen = true;
+            }
         }
-        // classObj: function (className) {
-        //     if(className=="header-scroll"){
-        //         return {
-        //             scroll: this.header.scroll
-        //         }
-        //     }
-        // }
+
     },
     mounted() {
         this.loader.run = true;
@@ -51,7 +69,7 @@ let vm = new Vue({
 
         let scrollTimer;
         window.addEventListener('scroll', function () {
-            vm.header.scroll=true;
+            vm.header.scroll = true;
 
             if (scrollTimer) {
                 clearTimeout(scrollTimer);
@@ -66,8 +84,8 @@ let vm = new Vue({
 
                 console.log(`wScrollY: ${wScrollY}; wInnerH: ${wInnerH}; bScrollH: ${bScrollH}`)
 
-                if(wScrollY>0){
-                    vm.header.scroll=false;
+                if (wScrollY > 0) {
+                    vm.header.scroll = false;
                 }
 
             }, 40);

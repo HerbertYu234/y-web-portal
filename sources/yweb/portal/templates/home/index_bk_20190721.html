@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <link rel="shortcut icon" href="/static/img/favicon.ico">
     <link href="/static/js/lib/element-ui/index.css" rel="stylesheet">
-    <link href="/static/font-icon/style.css" rel="stylesheet">
+    <link href="/static/font-icon/icomoon/style.css" rel="stylesheet">
     <script src="/static/js/lib/vue.js"></script>
     <script src="/static/js/lib/element-ui/index.js"></script>
     <!--    <link rel="stylesheet" href="http://www.daiwei.org/global/css/jquery.mCustomScrollbar.css">-->
@@ -30,6 +30,7 @@
 
         a {
             text-decoration: none;
+            color: white;
         }
 
         ul {
@@ -54,6 +55,7 @@
             width: 96%;
             /*margin: 0px auto;*/
             background: none;
+            z-index: 999;
         }
 
         div.header.scroll {
@@ -207,19 +209,48 @@
             z-index: 1111;
         }
 
+        .kit {
+            position: fixed;
+            bottom: 0px;
+            right: 0px;
+            color: white;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            font-size: 16px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            text-align: center;
+            cursor: pointer;
+            margin: 10px;
+            z-index: 1000;
+        }
+
         #index {
             height: 850px;
+            position: relative;
         }
 
         #index div.footer {
             bottom: 0px;
             position: fixed;
             width: 100%;
+            z-index: 999;
         }
 
         #index div.footer > footer {
             text-align: center;
             color: powderblue;
+        }
+
+        #index .content {
+            padding: 0 80px 50px;
+            position: absolute;
+            color: #fff;
+            left: 50%;
+            top: 30%;
+            margin: 0 10px;
+            transform: translate(-50%, -50%);
         }
 
         .weak {
@@ -230,6 +261,119 @@
             text-align: center;
             height: 850px;
         }
+
+        .account-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(0, 0, 0, .6);
+            /*display: none;*/
+            z-index: 1000;
+        }
+
+        .login {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-height: 300px;
+            max-width: 400px;
+            width: 100%;
+            background: rgba(0, 0, 0, .4);
+            transform: translate3d(-50%, -50%, 0);
+            color: white;
+            padding: 0px 0 2px 0;
+        }
+
+        .login > .head {
+            position: relative;
+            background: darkgray;
+            padding: 10px;
+        }
+
+        .login > .head > h4 {
+            display: inline-block;
+            font-size: 20px;
+        }
+
+        .login > .head > button {
+            position: absolute;
+            right: 0px;
+            background: inherit;
+            color: white;
+            cursor: pointer;
+            border: 0;
+            /*padding: 0;*/
+            font-size: 21px;
+            font-weight: bold;
+            line-height: 1;
+            outline: none;
+        }
+
+        .form-groupA {
+            margin: 30px 10px;
+        }
+
+        .form-groupA > label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-groupA > input {
+            display: block;
+            width: 100%;
+            font-size: 14px;
+            border: none;
+            outline: none;
+            background: inherit;
+            color: white;
+            border-bottom: 1px solid #aaa;
+        }
+
+        .form-groupA > input:focus {
+            border-bottom: 2px solid #ffffff;
+        }
+
+        .txt-center {
+            text-align: center;
+        }
+
+        .go-regist, .go-login {
+            color: yellowgreen;
+            cursor: pointer;
+        }
+
+        .forgetPwd {
+            color: yellowgreen;
+            float: right;
+        }
+
+        .more-login-way {
+            position: absolute;
+            left: calc(50% - 52px);
+            top: -10px;
+            padding: 0 10px;
+            background: rgba(0, 0, 0, .4);
+        }
+
+        .login-way {
+            cursor: pointer;
+            font-size: 26px;
+        }
+
+        .confirm {
+            text-decoration: underline;
+            font-size: 20px;
+            color: yellowgreen;
+        }
+
+        #verify-code {
+            width: 50%;
+            display: inline;
+        }
     </style>
 </head>
 <body>
@@ -239,6 +383,10 @@
         <!--        <div class='loader-container' v-bind:style="{ display: (isLoading ?'block':'none') }">-->
         <div class='loader-container' v-show="isLoading">
             <div class='loader-obj'></div>
+        </div>
+
+        <div class="kit">
+            <i :title="kit.isFullScreen ? '取消全屏' : '全屏'" @click="toggleFullscreen" class="icon-fullscreen"></i>
         </div>
 
         <section id="index">
@@ -257,10 +405,13 @@
                         <li class="nav"><a href="javascript:;">关于</a></li>
                     </ul>
                     <ul class="right-nav-url">
-                        <li class="nav"><a class="icon-community" :class="{active:header.account}" v-on:click="toggleAccountLayer" title="登录"
+                        <li class="nav"><a class="icon-community" :class="{active:header.account}"
+                                           v-on:click="toggleAccountLayer" title="登录"
                                            href="javascript:;"></a></li>
-                        <li class="nav"><a class="icon-github" title="github" target="_blank" href="https://github.com/HerbertYu234/y-web-portal"></a></li>
-                        <li class="nav"><a class="icon-setting" :class="{active:header.settings}" v-on:click="toggleSettingsLayer" title="设置"
+                        <li class="nav"><a class="icon-github" title="github" target="_blank"
+                                           href="https://github.com/HerbertYu234/y-web-portal"></a></li>
+                        <li class="nav"><a class="icon-setting" :class="{active:header.settings}"
+                                           v-on:click="toggleSettingsLayer" title="设置"
                                            href="javascript:;"></a></li>
                     </ul>
                 </nav>
@@ -268,6 +419,8 @@
 
             <div class="content">
                 <!--  My name is yhb-->
+                <p style="font-size: 30px;letter-spacing: .1em;">Get busy living, or get busy dying. – Andy Dufresne,
+                    from The Shawshank Redemption</p>
             </div>
 
             <div class="footer">
@@ -285,7 +438,90 @@
 
     </section>
 
-    <div class="account-layer">
+    <div class="account-layer" v-show="header.account">
+        <div class="login" v-if="account.layer_login">
+            <div class="head">
+                <h4>登录</h4>
+                <button @click="toggleAccountLayer"><span>x</span></button>
+            </div>
+            <div class="body">
+                <form>
+
+                    <div class="form-groupA">
+                        <label for="username">用户名</label>
+                        <input type="text" id="username" placeholder="请输入用户名" autocomplete="off">
+                    </div>
+
+                    <div class="form-groupA">
+                        <label for="password">密码</label>
+                        <input type="password" id="password" placeholder="请输入密码">
+                    </div>
+
+                    <div class="form-groupA txt-center">
+                        <a href="javascript:;" class="confirm">登录</a>
+                    </div>
+
+                    <div class="form-groupA">
+                        没有账号？<span class="go-regist" @click="goRegist">注册</span>
+                        <a href="javascript:;" class="forgetPwd">忘记密码</a>
+                    </div>
+
+                    <div class="form-groupA" style="position: relative; border-bottom: 1px solid #aaa;">
+                        <span class="more-login-way">更多登录方式</span>
+                    </div>
+
+                    <div class="form-groupA txt-center">
+                        <a class="login-way icon-11qq"></a>
+                        <a class="login-way icon-10wechat"></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="login" v-else-if="account.layer_regist">
+            <div class="head">
+                <h4>注册</h4>
+                <button @click="toggleAccountLayer"><span>x</span></button>
+            </div>
+            <div class="body">
+                <form>
+
+                    <div class="form-groupA">
+                        <label for="username">用户名</label>
+                        <input type="text" id="username" placeholder="请输入用户名" autocomplete="off">
+                    </div>
+
+                    <div class="form-groupA">
+                        <label for="password">密码</label>
+                        <input type="password" id="password" placeholder="请输入密码">
+                    </div>
+
+                    <div class="form-groupA">
+                        <label for="verify-code">验证码</label>
+                        <input type="text" id="verify-code" placeholder="请输入验证码" autocomplete="off">
+                        <img src="/static/img/icon/idencode.png" style="cursor: pointer">
+                    </div>
+
+                    <div class="form-groupA txt-center">
+                        <a href="javascript:;" class="confirm">注册</a>
+                    </div>
+
+                    <div class="form-groupA">
+                        已有账号？<span class="go-login" @click="goLogin">登录</span>
+                    </div>
+
+                    <div class="form-groupA" style="position: relative; border-bottom: 1px solid #aaa;">
+                        <span class="more-login-way">更多登录方式</span>
+                    </div>
+
+                    <div class="form-groupA txt-center">
+                        <a class="login-way icon-11qq"></a>
+                        <a class="login-way icon-10wechat"></a>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     </div>
 </section>
