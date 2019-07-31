@@ -1,0 +1,2 @@
+@import "public"; //导入全局文件 public.scss
+@import "index"; //导入局部文件 _index.scss  (以 _ 开头SASS不会自动编译为css 只有遇到@import时才会编译)
