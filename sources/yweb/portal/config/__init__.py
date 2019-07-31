@@ -23,7 +23,7 @@ class Config(abc.ABC):
 
     flask = _Flask(
         host="0.0.0.0",
-        port=5001,
+        port=5555,
         debug=True,
         env='development'
     )
